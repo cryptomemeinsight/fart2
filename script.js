@@ -1,4 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Hamburger Menu Logic
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('nav');
+    const navLinks = document.querySelectorAll('nav a');
+
+    if (hamburger) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+    }
+
     // Tweet Stacking Logic
     const container = document.getElementById('tweet-stack-container');
     const imageCount = 10; // tweet_1.png to tweet_10.png
