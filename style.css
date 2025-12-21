@@ -107,6 +107,13 @@ nav a:hover {
     line-height: 1;
 }
 
+.community-owned-text {
+    font-size: 3.5rem !important; /* Override generic H2 size */
+    color: var(--accent-color) !important; /* Yellow for visibility */
+    margin-bottom: 1rem !important;
+    text-shadow: 4px 4px 0 #000 !important;
+}
+
 /* Contract Address Styles */
 .contract-container {
     display: flex;
@@ -932,6 +939,11 @@ footer {
 
     .hero-content h2 {
         font-size: 3rem;
+    }
+
+    .community-owned-text {
+        font-size: 2rem !important; /* Smaller on mobile */
+        margin-bottom: 0.5rem !important;
     }
 
     .wheel-wrapper {
