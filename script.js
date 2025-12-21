@@ -108,45 +108,162 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentTweetIndex = 0;
     let lastZone = null;
 
+    // Tweet Position History
+    const recentPositions = [];
+    const MAX_HISTORY = 4; // Remember last 4 positions
+
     const showNextTweet = () => {
         const img = tweetElements[currentTweetIndex];
         
-        // Assign random position based on Safe Zones (Corners) to avoid center content
-        // Zones: tl (Top-Left), tr (Top-Right), bl (Bottom-Left), br (Bottom-Right)
-        const zones = ['tl', 'tr', 'bl', 'br'];
+        // Define critical UI elements to avoid
+        const criticalElements = [
+            document.querySelector('header'),
+            document.querySelector('.community-owned-text'), // H2
+            document.querySelector('.contract-container'),
+            document.querySelector('.cta-group'),
+            document.querySelector('#spin-btn') // Mobile spin button
+        ];
         
-        // Filter out the last zone to avoid immediate repetition and overlap
-        // "Never ever appear in same place"
-        const availableZones = zones.filter(z => z !== lastZone);
-        const zone = availableZones[Math.floor(Math.random() * availableZones.length)];
+        // Get their bounding rects
+        const exclusionRects = [];
+        criticalElements.forEach(el => {
+            if (el && el.offsetParent !== null) { // Check if visible
+                // Expand rect slightly (padding) for safety
+                const rect = el.getBoundingClientRect();
+                exclusionRects.push({
+                    left: rect.left - 10,
+                    top: rect.top - 10,
+                    right: rect.right + 10,
+                    bottom: rect.bottom + 10
+                });
+            }
+        });
         
-        lastZone = zone;
-        
-        let xMin, xMax, yMin, yMax;
+        const isMobile = window.innerWidth < 768;
 
-        // Desktop Tweet Width is ~30%. Screen center is ~35%-65%.
-        // Vertical center content is roughly 30%-60% top.
+        let bestX = 0, bestY = 0;
+        let found = false;
         
-        if (zone === 'tl') {
-            xMin = 2; xMax = 15;
-            yMin = 5; yMax = 25;
-        } else if (zone === 'tr') {
-            xMin = 55; xMax = 65; // Ends at ~95%
-            yMin = 5; yMax = 25;
-        } else if (zone === 'bl') {
-            xMin = 2; xMax = 15;
-            yMin = 65; yMax = 75;
-        } else if (zone === 'br') {
-            xMin = 55; xMax = 65;
-            yMin = 65; yMax = 75;
+        // Attempt to find a valid spot
+        // Increased attempts for better coverage
+        for (let attempt = 0; attempt < 100; attempt++) {
+            
+            let xMin = 2, xMax = 68; // Desktop defaults
+            let yMin = 10, yMax = 70;
+            
+            if (isMobile) {
+                // Mobile constraints
+                // 80% width -> max left 15% (allows 5% margin)
+                xMin = 5; xMax = 15; 
+                
+                // On mobile, vertical space is key.
+                // We want to utilize the full height if possible, but avoid the contract card.
+                // The contract card is usually in the lower middle.
+                yMin = 5; yMax = 60; 
+            }
+
+            const randomLeftPc = Math.floor(Math.random() * (xMax - xMin + 1)) + xMin;
+            const randomTopPc = Math.floor(Math.random() * (yMax - yMin + 1)) + yMin;
+            
+            // Convert to pixels for collision check
+            const testLeft = (randomLeftPc / 100) * window.innerWidth;
+            const testTop = (randomTopPc / 100) * window.innerHeight;
+            
+            // Estimate Tweet Size
+            const tweetWidth = isMobile ? window.innerWidth * 0.8 : Math.min(window.innerWidth * 0.3, 450);
+            const tweetHeight = isMobile ? 150 : 200; // Tweaked height estimation
+            
+            const testRect = {
+                left: testLeft,
+                top: testTop,
+                right: testLeft + tweetWidth,
+                bottom: testTop + tweetHeight
+            };
+            
+            // 1. Check Collision with UI Elements
+            let overlapsUI = false;
+            for (const zone of exclusionRects) {
+                if (testRect.left < zone.right &&
+                    testRect.right > zone.left &&
+                    testRect.top < zone.bottom &&
+                    testRect.bottom > zone.top) {
+                    overlapsUI = true;
+                    break;
+                }
+            }
+            if (overlapsUI) continue; // Try next attempt
+
+            // 2. Check Proximity to Recent Positions (Prevent "same place again and again")
+            let tooClose = false;
+            for (const pos of recentPositions) {
+                // Calculate distance between centers
+                const centerX = testRect.left + tweetWidth / 2;
+                const centerY = testRect.top + tweetHeight / 2;
+                const prevCenterX = pos.x + pos.width / 2;
+                const prevCenterY = pos.y + pos.height / 2;
+
+                const dist = Math.hypot(centerX - prevCenterX, centerY - prevCenterY);
+                
+                // Minimum distance required (e.g., 150px or 20% of screen)
+                const minDistance = isMobile ? 100 : 250;
+                
+                if (dist < minDistance) {
+                    tooClose = true;
+                    break;
+                }
+            }
+            if (tooClose) continue; // Try next attempt
+
+            // If we got here, it's a valid spot
+            bestX = randomLeftPc;
+            bestY = randomTopPc;
+            found = true;
+            
+            // Save to history
+            recentPositions.push({
+                x: testLeft,
+                y: testTop,
+                width: tweetWidth,
+                height: tweetHeight
+            });
+            if (recentPositions.length > MAX_HISTORY) {
+                recentPositions.shift(); // Remove oldest
+            }
+            
+            break;
+        }
+        
+        // Fallback Strategy
+        if (!found) {
+            // If random search failed, pick a corner based on index to cycle them
+            // ensuring we don't pick the same corner as immediately before
+            const corners = [
+                {x: 2, y: 15}, // TL
+                {x: 68, y: 15}, // TR
+                {x: 2, y: 70}, // BL
+                {x: 68, y: 70}  // BR
+            ];
+            
+            // Use currentTweetIndex to cycle corners deterministically if random fails
+            const cornerIndex = currentTweetIndex % corners.length;
+            const corner = corners[cornerIndex];
+            
+            bestX = corner.x;
+            bestY = corner.y;
+            
+            // Still update history for consistency
+            recentPositions.push({
+                x: (bestX / 100) * window.innerWidth,
+                y: (bestY / 100) * window.innerHeight,
+                width: 200, height: 200 // dummy dims
+            });
+            if (recentPositions.length > MAX_HISTORY) recentPositions.shift();
         }
 
-        const randomLeft = Math.floor(Math.random() * (xMax - xMin + 1)) + xMin;
-        const randomTop = Math.floor(Math.random() * (yMax - yMin + 1)) + yMin;
         const randomRotate = Math.floor(Math.random() * 40) - 20;
         
-        img.style.setProperty('--x-pos', `${randomLeft}%`);
-        img.style.setProperty('--y-pos', `${randomTop}%`);
+        img.style.setProperty('--x-pos', `${bestX}%`);
+        img.style.setProperty('--y-pos', `${bestY}%`);
         img.style.setProperty('--rotation', `${randomRotate}deg`);
         
         // Remove manual left/top overrides if they exist from previous drags
