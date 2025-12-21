@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('tweet-stack-container');
     const imageCount = 10; // tweet_1.png to tweet_10.png
     const images = [];
+    const tweetElements = [];
 
     // Generate image filenames
     for (let i = 1; i <= imageCount; i++) {
@@ -38,18 +39,15 @@ document.addEventListener('DOMContentLoaded', () => {
         img.classList.add('stacked-tweet');
         img.alt = `Fartcoin Tweet ${index + 1}`;
         img.draggable = false; // Disable native drag to use custom logic
+        
+        // Track interaction state on the element itself
+        img.isInteracting = false;
 
-        // Random positioning
-        // Left: 5% to 75% to keep it mostly inside width
-        const randomLeft = Math.floor(Math.random() * 70) + 5;
-        // Top: 5% to 60% to keep it inside height
-        const randomTop = Math.floor(Math.random() * 60) + 5;
-        // Rotation: -20deg to 20deg
-        const randomRotate = Math.floor(Math.random() * 40) - 20;
-
-        img.style.left = `${randomLeft}%`;
-        img.style.top = `${randomTop}%`;
-        img.style.transform = `rotate(${randomRotate}deg)`;
+        // Random animation settings (floating)
+        const randomDuration = 3 + Math.random() * 2; // 3-5s
+        const randomDelay = Math.random() * -2; // Start at random point
+        img.style.animationDuration = `${randomDuration}s`;
+        img.style.animationDelay = `${randomDelay}s`;
         
         // Stagger z-index
         img.style.zIndex = index + 1;
@@ -58,9 +56,16 @@ document.addEventListener('DOMContentLoaded', () => {
         let isDragging = false;
         let startX, startY, initialLeft, initialTop;
 
+        img.addEventListener('mouseenter', () => img.isInteracting = true);
+        img.addEventListener('mouseleave', () => {
+            if (!isDragging) img.isInteracting = false;
+        });
+
         img.addEventListener('mousedown', (e) => {
             isDragging = true;
+            img.isInteracting = true;
             startX = e.clientX;
+
             startY = e.clientY;
             
             // Get current computed style positions
@@ -90,12 +95,88 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('mouseup', () => {
             if (isDragging) {
                 isDragging = false;
+                img.isInteracting = false; // Release interaction lock
                 img.style.cursor = 'grab';
             }
         });
 
         container.appendChild(img);
+        tweetElements.push(img);
     });
+
+    // Central Tweet Manager (One by One)
+    let currentTweetIndex = 0;
+
+    const showNextTweet = () => {
+        const img = tweetElements[currentTweetIndex];
+        
+        // Assign random position based on Safe Zones (Corners) to avoid center content
+        // Zones: tl (Top-Left), tr (Top-Right), bl (Bottom-Left), br (Bottom-Right)
+        const zones = ['tl', 'tr', 'bl', 'br'];
+        const zone = zones[Math.floor(Math.random() * zones.length)];
+        
+        let xMin, xMax, yMin, yMax;
+
+        // Desktop Tweet Width is ~30%. Screen center is ~35%-65%.
+        // Vertical center content is roughly 30%-60% top.
+        
+        if (zone === 'tl') {
+            xMin = 2; xMax = 15;
+            yMin = 5; yMax = 25;
+        } else if (zone === 'tr') {
+            xMin = 55; xMax = 65; // Ends at ~95%
+            yMin = 5; yMax = 25;
+        } else if (zone === 'bl') {
+            xMin = 2; xMax = 15;
+            yMin = 65; yMax = 75;
+        } else if (zone === 'br') {
+            xMin = 55; xMax = 65;
+            yMin = 65; yMax = 75;
+        }
+
+        const randomLeft = Math.floor(Math.random() * (xMax - xMin + 1)) + xMin;
+        const randomTop = Math.floor(Math.random() * (yMax - yMin + 1)) + yMin;
+        const randomRotate = Math.floor(Math.random() * 40) - 20;
+        
+        img.style.setProperty('--x-pos', `${randomLeft}%`);
+        img.style.setProperty('--y-pos', `${randomTop}%`);
+        img.style.setProperty('--rotation', `${randomRotate}deg`);
+        
+        // Remove manual left/top overrides if they exist from previous drags
+        img.style.removeProperty('left');
+        img.style.removeProperty('top');
+
+        // Show
+        img.style.opacity = '1';
+
+        // Time before NEXT tweet appears (overlap start)
+        const nextTweetDelay = Math.random() * 1500 + 2000; // 2-3.5s
+
+        setTimeout(() => {
+            // Trigger next tweet immediately (so both are visible)
+            currentTweetIndex = (currentTweetIndex + 1) % tweetElements.length;
+            showNextTweet();
+
+            // Schedule hiding of CURRENT tweet (linger effect)
+            // It stays visible for a while alongside the new one
+            const lingerDuration = 4000; 
+
+            setTimeout(function checkHide() {
+                if (img.isInteracting) {
+                    // If user is reading/dragging, wait and check again
+                    setTimeout(checkHide, 1000);
+                    return;
+                }
+
+                // Hide slowly (CSS transition handles the fade)
+                img.style.opacity = '0';
+            }, lingerDuration);
+
+        }, nextTweetDelay);
+    };
+
+    // Start the cycle
+    setTimeout(showNextTweet, 1000);
 
     // Contract Copy Logic
     const copyBtn = document.getElementById('copy-btn');
