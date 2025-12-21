@@ -809,8 +809,63 @@ footer {
     color: #000;
 }
 
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    cursor: pointer;
+}
+
+.bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    background-color: var(--secondary-color);
+}
+
 /* Mobile Responsive */
 @media screen and (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    .hamburger.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburger.active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    nav {
+        position: fixed;
+        left: -100%;
+        top: 70px; /* Adjust based on header height */
+        gap: 0;
+        flex-direction: column;
+        background-color: rgba(0, 0, 0, 0.95);
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+        border-bottom: 2px solid var(--secondary-color);
+    }
+
+    nav.active {
+        left: 0;
+        display: flex;
+    }
+
+    nav a {
+        margin: 16px 0;
+    }
+
     .contract-container {
         flex-direction: column;
         padding: 1rem;
@@ -837,10 +892,6 @@ footer {
     
     .timeline-item.right {
         left: 0%;
-    }
-
-    nav {
-        display: none; /* Simple hide for now, would need burger menu */
     }
 
     .hero-content h2 {
