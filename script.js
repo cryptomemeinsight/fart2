@@ -106,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Central Tweet Manager (One by One)
     let currentTweetIndex = 0;
+    let lastZone = null;
 
     const showNextTweet = () => {
         const img = tweetElements[currentTweetIndex];
@@ -113,7 +114,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Assign random position based on Safe Zones (Corners) to avoid center content
         // Zones: tl (Top-Left), tr (Top-Right), bl (Bottom-Left), br (Bottom-Right)
         const zones = ['tl', 'tr', 'bl', 'br'];
-        const zone = zones[Math.floor(Math.random() * zones.length)];
+        
+        // Filter out the last zone to avoid immediate repetition and overlap
+        // "Never ever appear in same place"
+        const availableZones = zones.filter(z => z !== lastZone);
+        const zone = availableZones[Math.floor(Math.random() * availableZones.length)];
+        
+        lastZone = zone;
         
         let xMin, xMax, yMin, yMax;
 
