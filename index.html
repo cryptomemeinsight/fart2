@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fartcoin - The Second Whiff</title>
+    <link rel="icon" type="image/gif" href="2.gif">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <!-- Replaced image with text-based logo -->
+            <h1>FARTCOIN <img src="2.gif" class="inline-gif-2" alt="2"></h1>
+        </div>
+        <nav>
+            <a href="#hero">HOME</a>
+            <a href="#about">ABOUT</a>
+            <a href="#tokenomics">TOKENOMICS</a>
+            <a href="#roadmap">ROADMAP</a>
+            <a href="#buy">HOW TO BUY</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h2 class="glitch" data-text="THE SMELL OF SUCCESS">THE SMELL OF SUCCESS</h2>
+                <div class="contract-container">
+                    <span class="contract-label">CA:</span>
+                    <span id="contract-address">74Rx9dCmd1ZUEZxWJAdrt946NnfzkE68P35ojMSfpump</span>
+                    <button id="copy-btn" title="Copy Address">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 9H11C9.89543 9 9 9.89543 9 11V20C9 21.1046 9.89543 22 11 22H20C21.1046 22 22 21.1046 22 20V11C22 9.89543 21.1046 9 20 9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <div id="copy-tooltip">COPIED!</div>
+                </div>
+                <div class="cta-group">
+                    <a href="https://dexscreener.com/solana/Fn1wDJToZVPFZQLEGfs95UmVddFzdMSpd6aqkBtQUtFt" target="_blank" class="cta-button primary" style="text-decoration: none; display: inline-block;">BUY FARTCOIN <img src="2.gif" class="inline-gif-2" alt="2"></a>
+                    <a href="https://t.me/fartcoin2tg" target="_blank" class="cta-button secondary" style="text-decoration: none; display: inline-block;">JOIN TELEGRAM</a>
+                </div>
+            </div>
+            <div id="tweet-stack-container">
+                <!-- Draggable images will be injected here by JS -->
+            </div>
+        </section>
+
+        <section id="overtake-wheel">
+            <div class="section-container">
+                <h2>WHICH ONE WILL FARTCOIN <img src="2.gif" class="inline-gif-2" alt="2"> OVERTAKE IN 2026?</h2>
+                <div class="wheel-container-main">
+                    <div class="wheel-marker"></div>
+                    <div class="wheel-wrapper" id="wheel">
+                        <div class="center-piece" id="center-spin-area">
+                            <img src="2.gif" alt="Fartcoin Center" class="pulse-center">
+                            <div class="spin-overlay">
+                                <span>SPIN</span>
+                            </div>
+                        </div>
+                        <div class="orbit-container">
+                            <div class="orbit-item" style="--i:1"><img src="doge.png" alt="Doge"></div>
+                            <div class="orbit-item" style="--i:2"><img src="pepe.png" alt="Pepe"></div>
+                            <div class="orbit-item" style="--i:3"><img src="pengu.png" alt="Pengu"></div>
+                            <div class="orbit-item" style="--i:4"><img src="pippin.png" alt="Pippin"></div>
+                            <div class="orbit-item" style="--i:5"><img src="troll.png" alt="Troll"></div>
+                            <div class="orbit-item" style="--i:6"><img src="wojak.png" alt="Wojak"></div>
+                            <div class="orbit-item" style="--i:7"><img src="fartcoin.png" alt="Fartcoin"></div>
+                            <div class="orbit-item" style="--i:8"><img src="bonk.png" alt="Bonk"></div>
+                            <div class="orbit-item" style="--i:9"><img src="UFD.png" alt="UFD"></div>
+                        </div>
+                    </div>
+                </div>
+                <button id="spin-btn" class="cta-button primary mobile-only" style="margin-top: 2rem;">SPIN TO PREDICT</button>
+            </div>
+        </section>
+
+    <!-- Winner Modal -->
+    <div id="winner-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>PREDICTION CONFIRMED!</h2>
+            <div id="winner-card" class="winner-card">
+                <h3>FARTCOIN <img src="2.gif" class="inline-gif-2" alt="2"> WILL OVERTAKE</h3>
+                <div class="winner-image-container">
+                    <img id="winner-img" src="" alt="Winner">
+                </div>
+                <h3 id="winner-name">COIN NAME</h3>
+                <p>IN 2026</p>
+                <div class="watermark">fartcoin2.xyz</div>
+            </div>
+            <div class="modal-actions">
+                <button id="download-card-btn" class="cta-button primary">DOWNLOAD CARD</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section --> <section id="about">
+            <div class="section-container">
+                <h2>WHAT IS FARTCOIN <img src="2.gif" class="inline-gif-2" alt="2">?</h2>
+                <div class="content-box">
+                    <p>Fartcoin <img src="2.gif" class="inline-gif-2" alt="2"> is the evolution of gas. It's bigger, louder, and more potent than ever before. We are taking meme coins to a whole new level of absurdity. While other coins go to the moon, we prefer to linger in the room.</p>
+                    <p>No presale, no taxes, LP burnt, and contract renounced. Just pure, unadulterated wind.</p>
+                </div>
+                <div class="fartdev-container">
+                    <img src="fartdev.jpeg" alt="Fart Dev" class="fartdev-img">
+                </div>
+            </div>
+        </section>
+
+        <section id="tokenomics">
+            <div class="section-container">
+                <h2>TOKENOMICS</h2>
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3>TOTAL SUPPLY</h3>
+                        <p class="big-number">1,000,000,000</p>
+                    </div>
+                    <div class="card">
+                        <h3>TAXES</h3>
+                        <p class="big-number">0/0</p>
+                        <p>No Buy/Sell Tax</p>
+                    </div>
+                    <div class="card">
+                        <h3>LIQUIDITY</h3>
+                        <p class="big-number">2%</p>
+                        <p>Burnt till now</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap">
+            <div class="section-container">
+                <h2>THE ROADMAP</h2>
+                <div class="timeline">
+                    <div class="timeline-item left">
+                        <div class="content">
+                            <h3>PHASE 1: THE BUILDUP</h3>
+                            <ul>
+                                <li>Website Launch</li>
+                                <li>Social Media Setup</li>
+                                <li>First Whiff (Launch)</li>
+                                <li>1,000 Holders</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline-item right">
+                        <div class="content">
+                            <h3>PHASE 2: THE RELEASE</h3>
+                            <ul>
+                                <li>CoinGecko Listing</li>
+                                <li>CMC Listing</li>
+                                <li>Viral Marketing Campaigns</li>
+                                <li>5,000 Holders</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline-item left">
+                        <div class="content">
+                            <h3>PHASE 3: THE LINGER</h3>
+                            <ul>
+                                <li>CEX Listings</li>
+                                <li>Fartcoin <img src="2.gif" class="inline-gif-2" alt="2"> Merch</li>
+                                <li>Global Domination</li>
+                                <li>100,000 Holders</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="buy">
+            <div class="section-container">
+                <h2>HOW TO BUY</h2>
+                <div class="steps-grid">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>CREATE WALLET</h3>
+                        <p>Download Phantom or your wallet of choice.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>GET SOL</h3>
+                        <p>Buy SOL and send it to your wallet.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>SWAP</h3>
+                        <p>Go to Raydium and swap SOL for FARTCOIN <img src="2.gif" class="inline-gif-2" alt="2">.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <h3>FARTCOIN <img src="2.gif" class="inline-gif-2" alt="2"></h3>
+            <p>The smell that never leaves.</p>
+            <div class="socials">
+                <a href="https://x.com/i/communities/2002466162538352704" target="_blank">TWITTER</a>
+                <a href="https://t.me/fartcoin2tg" target="_blank">TELEGRAM</a>
+                <a href="https://dexscreener.com/solana/Fn1wDJToZVPFZQLEGfs95UmVddFzdMSpd6aqkBtQUtFt" target="_blank">DEXSCREENER</a>
+            </div>
+            <p class="copyright">&copy; 2025 Fartcoin <img src="2.gif" class="inline-gif-2" alt="2">. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="lib/gif.js"></script>
+    <script src="lib/omggif.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
