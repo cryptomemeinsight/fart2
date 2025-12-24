@@ -780,13 +780,19 @@
                 ctx.fillText('fartcoin2.xyz', 300, 750);
                 const shareText = `PREDICTION CONFIRMED! FARTCOIN WILL OVERTAKE ${winnerName.textContent} IN 2026`;
                 const shareUrl = 'https://fartcoin2.xyz/';
-                const dataUrl = canvas.toDataURL('image/png');
-                const a = document.createElement('a');
-                a.download = `fartcoin2-prediction-${winnerName.textContent}.png`;
-                a.href = dataUrl;
-                a.click();
-                const intent = `https://x.com/intent/tweet?text=${encodeURIComponent(`${shareText} ${shareUrl}`)}`;
-                window.open(intent, '_blank');
+                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                const file = new File([blob], `fartcoin2-prediction-${winnerName.textContent}.png`, { type: 'image/png' });
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({ text: `${shareText}\n${shareUrl}`, files: [file] });
+                } else {
+                    const dataUrl = canvas.toDataURL('image/png');
+                    const a = document.createElement('a');
+                    a.download = `fartcoin2-prediction-${winnerName.textContent}.png`;
+                    a.href = dataUrl;
+                    a.click();
+                    const intent = `https://x.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+                    window.open(intent, '_blank');
+                }
             } catch (e) {
                 alert('Unable to prepare share.');
             } finally {
