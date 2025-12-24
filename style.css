@@ -449,16 +449,43 @@ h2 {
 
 .modal-content {
     background-color: var(--card-bg);
-    margin: 5% auto;
-    padding: 2rem;
+    margin: 4% auto;
+    padding: 1.25rem;
     border: 4px solid var(--secondary-color);
-    width: 90%;
-    max-width: 500px;
+    width: 88%;
+    max-width: 420px;
+    max-height: 85vh;
+    overflow-y: auto;
     border-radius: 20px;
     text-align: center;
     position: relative;
     box-shadow: 0 0 50px rgba(118, 255, 3, 0.3);
     animation: slideIn 0.5s ease;
+}
+
+.modal-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #222;
+    border-radius: 12px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+    border-radius: 12px;
+    border: 2px solid #000;
+    box-shadow: 0 0 10px var(--secondary-color);
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #a8ff5a;
+}
+
+.modal-content {
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-color) #222;
 }
 
 @keyframes slideIn {
@@ -1023,6 +1050,39 @@ footer {
         font-size: 1.4rem;
         padding: 0.8rem 1rem;
         box-sizing: border-box; /* Ensure padding doesn't affect width calculation */
+    }
+
+    .modal-content {
+        width: 95%;
+        max-width: 360px;
+        padding: 0.8rem;
+        margin: 6% auto;
+        max-height: 90vh;
+    }
+    
+    .close-modal {
+        font-size: 24px;
+    }
+    
+    .winner-card h3 {
+        font-size: 1.2rem;
+    }
+    
+    .winner-card p {
+        font-size: 1rem;
+    }
+    
+    .winner-image-container {
+        width: 100px;
+        height: 100px;
+        padding: 6px;
+    }
+    
+    .modal-actions button {
+        width: 100%;
+        max-width: 280px;
+        font-size: 1rem;
+        box-sizing: border-box;
     }
 
     .socials {
