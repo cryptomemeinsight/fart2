@@ -785,7 +785,7 @@
                 a.download = `fartcoin2-prediction-${winnerName.textContent}.png`;
                 a.href = dataUrl;
                 a.click();
-                const intent = `https://x.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+                const intent = `https://x.com/intent/tweet?text=${encodeURIComponent(`${shareText} ${shareUrl}`)}`;
                 window.open(intent, '_blank');
             } catch (e) {
                 alert('Unable to prepare share.');
