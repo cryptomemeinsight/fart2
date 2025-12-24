@@ -612,6 +612,52 @@ h2 {
     background-size: 20px 20px;
 }
 
+.lore-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lore-image {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+}
+
+
+.lore-highlights {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.lore-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    text-align: left;
+}
+
+.lore-list li {
+    color: #ffffff;
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    text-shadow: 2px 2px 0 #000;
+    margin: 0.5rem 0;
+}
+
+.lore-image img {
+    max-width: 560px;
+    width: 70%;
+    height: auto;
+    border-radius: 15px;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%);
+}
+
 .content-box {
     background-color: var(--card-bg);
     border: 4px solid var(--primary-color);
@@ -968,6 +1014,11 @@ footer {
         font-size: 1.4rem;
         padding: 0.8rem 1rem;
         box-sizing: border-box; /* Ensure padding doesn't affect width calculation */
+    }
+
+    .lore-image img {
+        width: 90%;
+        max-width: 560px;
     }
 
     /* @keyframes counter-spin-mobile removed */
