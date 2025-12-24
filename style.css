@@ -606,10 +606,15 @@ h2 {
 
 /* About Section */
 #about {
-    padding: 6rem 0;
+    padding: 4rem 0;
     background-color: #1a1a1a;
     background-image: radial-gradient(#333 1px, transparent 1px);
     background-size: 20px 20px;
+}
+
+.section-container #about h2, 
+#about h2 {
+    margin-bottom: 2rem;
 }
 
 .lore-wrapper {
@@ -620,7 +625,7 @@ h2 {
 }
 
 .lore-image {
-    margin-top: 2rem;
+    margin-top: 1rem;
     display: flex;
     justify-content: center;
     position: relative;
@@ -972,6 +977,10 @@ footer {
         left: 15px;
     }
     
+    .timeline-item.right::after {
+        left: 15px;
+    }
+    
     .timeline-item.right {
         left: 0%;
     }
@@ -1019,6 +1028,22 @@ footer {
     .lore-image img {
         width: 90%;
         max-width: 560px;
+    }
+    
+    h2 {
+        font-size: 2.6rem;
+    }
+    
+    #about {
+        padding: 3rem 0;
+    }
+    
+    #about h2 {
+        margin-bottom: 1.5rem;
+    }
+    
+    .lore-image {
+        margin-top: 1rem;
     }
 
     /* @keyframes counter-spin-mobile removed */
