@@ -517,7 +517,7 @@
         const winnerImg = document.getElementById('winner-img');
         const winnerName = document.getElementById('winner-name');
         const downloadBtn = document.getElementById('download-card-btn');
-        // const shareBtn = document.getElementById('share-twitter-btn'); // Removed as per request
+        const shareXBtn = document.getElementById('share-x-btn');
 
         function showWinnerModal(index) {
             const winningItem = orbitItems[index];
@@ -550,20 +550,17 @@
         // Let's use a simple Canvas API approach to draw the card dynamically.
 
         downloadBtn.addEventListener('click', async () => {
-            // Change button text to indicate processing
             const originalText = downloadBtn.textContent;
             downloadBtn.textContent = "GENERATING CARD...";
             downloadBtn.disabled = true;
 
             try {
-                // 1. Load Images
                 const logoImgObj = new Image();
                 logoImgObj.src = '2.gif';
                 
                 const winnerImgObj = new Image();
                 winnerImgObj.src = winnerImg.src;
 
-                // Wait for images to load
                 await Promise.all([
                     new Promise((resolve, reject) => {
                         if (logoImgObj.complete) resolve();
@@ -581,30 +578,24 @@
                     })
                 ]);
                 
-                // 2. Create Canvas
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 canvas.width = 600;
                 canvas.height = 800;
                 
-                // 3. Draw Card Base
-                // Draw Background
                 const gradient = ctx.createLinearGradient(0, 0, 600, 800);
                 gradient.addColorStop(0, '#1a1a1a');
                 gradient.addColorStop(1, '#000000');
                 ctx.fillStyle = gradient;
                 ctx.fillRect(0, 0, 600, 800);
                 
-                // Draw Border
                 ctx.strokeStyle = '#ffea00';
                 ctx.lineWidth = 10;
                 ctx.strokeRect(20, 20, 560, 760);
                 
-                // Draw Text Header
                 ctx.fillStyle = '#76ff03';
                 ctx.font = '50px "Bangers", impact, sans-serif'; 
                 
-                // Line 1: FARTCOIN [IMG]
                 const text1 = "FARTCOIN";
                 ctx.textAlign = 'left';
                 const metrics1 = ctx.measureText(text1);
@@ -617,18 +608,15 @@
                 
                 ctx.fillText(text1, startX1, currentY);
                 
-                // Draw Logo Image
                 const imgX = startX1 + metrics1.width + gap;
                 const imgY = currentY - 40;
                 ctx.drawImage(logoImgObj, imgX, imgY, imgSize, imgSize);
                 
                 let nextY = currentY + 60;
                 
-                // Line 2: WILL OVERTAKE
                 ctx.textAlign = 'center';
                 ctx.fillText("WILL OVERTAKE", 300, nextY);
                 
-                // 4. Draw Winner Image (Circle)
                 ctx.save();
                 ctx.beginPath();
                 ctx.arc(300, 325, 150, 0, Math.PI * 2, true);
@@ -643,7 +631,6 @@
                 ctx.arc(300, 325, 150, 0, Math.PI * 2, true);
                 ctx.stroke();
                 
-                // 5. Draw Winner Name
                 function wrapText(context, text, x, y, maxWidth, lineHeight) {
                     const words = text.split(' ');
                     let line = '';
@@ -675,19 +662,16 @@
                 ctx.font = '40px "Bangers", impact, sans-serif';
                 ctx.fillText('IN 2026', 300, currentY + 50);
                 
-                // 6. Footer
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
                 ctx.font = '20px Courier New';
                 ctx.fillText('fartcoin2.xyz', 300, 750);
                 
-                // 7. Download
                 const dataUrl = canvas.toDataURL('image/png');
                 const link = document.createElement('a');
                 link.download = `fartcoin2-prediction-${winnerName.textContent}.png`;
                 link.href = dataUrl;
                 link.click();
                 
-                // Reset button
                 downloadBtn.textContent = originalText;
                 downloadBtn.disabled = false;
 
@@ -699,9 +683,115 @@
             }
         });
 
-        // shareBtn.addEventListener('click', () => {
-        //     const text = `I just predicted that Fartcoin 2 will overtake ${winnerName.textContent} in 2026! 🚀💨 Check it out at`;
-        //     const url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent("http://fartcoin2.com"); // Placeholder URL
-        //     window.open(url, '_blank');
-        // });
+        shareXBtn.addEventListener('click', async () => {
+            const originalText = shareXBtn.textContent;
+            shareXBtn.textContent = "PREPARING...";
+            shareXBtn.disabled = true;
+            try {
+                const logoImgObj = new Image();
+                logoImgObj.src = '2.gif';
+                const winnerImgObj = new Image();
+                winnerImgObj.src = winnerImg.src;
+                await Promise.all([
+                    new Promise((resolve, reject) => {
+                        if (logoImgObj.complete) resolve();
+                        else {
+                            logoImgObj.onload = resolve;
+                            logoImgObj.onerror = reject;
+                        }
+                    }),
+                    new Promise((resolve, reject) => {
+                        if (winnerImgObj.complete) resolve();
+                        else {
+                            winnerImgObj.onload = resolve;
+                            winnerImgObj.onerror = reject;
+                        }
+                    })
+                ]);
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 600;
+                canvas.height = 800;
+                const gradient = ctx.createLinearGradient(0, 0, 600, 800);
+                gradient.addColorStop(0, '#1a1a1a');
+                gradient.addColorStop(1, '#000000');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, 600, 800);
+                ctx.strokeStyle = '#ffea00';
+                ctx.lineWidth = 10;
+                ctx.strokeRect(20, 20, 560, 760);
+                ctx.fillStyle = '#76ff03';
+                ctx.font = '50px "Bangers", impact, sans-serif'; 
+                const text1 = "FARTCOIN";
+                ctx.textAlign = 'left';
+                const metrics1 = ctx.measureText(text1);
+                const imgSize = 50; 
+                const gap = 10;
+                const totalWidth1 = metrics1.width + gap + imgSize;
+                let startX1 = 300 - (totalWidth1 / 2);
+                let currentY = 100;
+                ctx.fillText(text1, startX1, currentY);
+                const imgX = startX1 + metrics1.width + gap;
+                const imgY = currentY - 40;
+                ctx.drawImage(logoImgObj, imgX, imgY, imgSize, imgSize);
+                let nextY = currentY + 60;
+                ctx.textAlign = 'center';
+                ctx.fillText("WILL OVERTAKE", 300, nextY);
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(300, 325, 150, 0, Math.PI * 2, true);
+                ctx.closePath();
+                ctx.clip();
+                ctx.drawImage(winnerImgObj, 150, 175, 300, 300);
+                ctx.restore();
+                ctx.strokeStyle = '#ffea00';
+                ctx.lineWidth = 5;
+                ctx.beginPath();
+                ctx.arc(300, 325, 150, 0, Math.PI * 2, true);
+                ctx.stroke();
+                function wrapText(context, text, x, y, maxWidth, lineHeight) {
+                    const words = text.split(' ');
+                    let line = '';
+                    for(let n = 0; n < words.length; n++) {
+                        const testLine = line + words[n] + ' ';
+                        const metrics = context.measureText(testLine);
+                        const testWidth = metrics.width;
+                        if (testWidth > maxWidth && n > 0) {
+                            context.fillText(line, x, y);
+                            line = words[n] + ' ';
+                            y += lineHeight;
+                        } else {
+                            line = testLine;
+                        }
+                    }
+                    context.fillText(line, x, y);
+                    return y;
+                }
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '60px "Bangers", impact, sans-serif';
+                ctx.textAlign = 'center';
+                currentY = 550;
+                currentY = wrapText(ctx, winnerName.textContent, 300, currentY, 500, 70);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '40px "Bangers", impact, sans-serif';
+                ctx.fillText('IN 2026', 300, currentY + 50);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.font = '20px Courier New';
+                ctx.fillText('fartcoin2.xyz', 300, 750);
+                const shareText = `PREDICTION CONFIRMED! FARTCOIN WILL OVERTAKE ${winnerName.textContent} IN 2026`;
+                const shareUrl = 'https://fartcoin2.xyz/';
+                const dataUrl = canvas.toDataURL('image/png');
+                const a = document.createElement('a');
+                a.download = `fartcoin2-prediction-${winnerName.textContent}.png`;
+                a.href = dataUrl;
+                a.click();
+                const intent = `https://x.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+                window.open(intent, '_blank');
+            } catch (e) {
+                alert('Unable to prepare share.');
+            } finally {
+                shareXBtn.textContent = originalText;
+                shareXBtn.disabled = false;
+            }
+        });
     });
