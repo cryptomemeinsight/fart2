@@ -664,7 +664,7 @@
                 
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
                 ctx.font = '20px Courier New';
-                ctx.fillText('fartcoin2.xyz', 300, 750);
+                ctx.fillText('fartcoin2.com', 300, 750);
                 
                 const dataUrl = canvas.toDataURL('image/png');
                 const link = document.createElement('a');
@@ -777,9 +777,9 @@
                 ctx.fillText('IN 2026', 300, currentY + 50);
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
                 ctx.font = '20px Courier New';
-                ctx.fillText('fartcoin2.xyz', 300, 750);
+                ctx.fillText('fartcoin2.com', 300, 750);
                 const shareText = `PREDICTION CONFIRMED! FARTCOIN WILL OVERTAKE ${winnerName.textContent} IN 2026`;
-                const shareUrl = 'https://fartcoin2.xyz/';
+                const shareUrl = 'https://fartcoin2.com/';
                 const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
                 const file = new File([blob], `fartcoin2-prediction-${winnerName.textContent}.png`, { type: 'image/png' });
                 if (navigator.canShare && navigator.canShare({ files: [file] })) {
